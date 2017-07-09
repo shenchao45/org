@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <script src="/back/js/jquery.js"></script>
+    <link rel="stylesheet" href="/back/css/bootstrap.css">
+    <script src="/back/js/bootstrap.js"></script>
+</head>
+<body>
+<div id="app">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">研究机构信息后台系统</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">用户管理 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">添加用户</a></li>
+                            <li><a href="http://localhost:8080/back/index_user.html">用户列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">机构管理 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" @click="addFirstPage()">添加机构信息</a></li>
+                            <li><a href="http://localhost:8080/back/index_org.html">机构列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">新闻管理 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" >添加新闻</a></li>
+                            <li><a href="http://localhost:8080/back/index_news.html">新闻列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">成员管理 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">添加成员</a></li>
+                            <li><a href="http://localhost:8080/back/index_member.html">成员列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">成果管理 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">添加成果</a></li>
+                            <li><a href="http://localhost:8080/back/index_result.html">成果列表</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+        <table id="table1" class="table table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">机构名称</th>
+                <th class="text-center">机构简介</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in newses">
+                <th class="text-center" scope="row">{{item.title}}</th>
+                <td class="text-center">{{item.content}}
+                </td>
+                <td class="text-center">
+                    <div class="btn-group" role="group">
+                        <button type="button" @click="edit(item)" class="btn btn-danger btn-warning">修改
+                        </button>
+                        <button type="button" @click="del(item)" class="btn btn-delete">删除
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">添加/修改</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="updateForm" action="/book_update.action" method="post">
+                            <div class="form-group">
+                                <label for="title" class="col-xs-2 control-label">机构名称</label>
+                                <div class="col-xs-10">
+                                    <input type="text" v-model="currentNews.title" class="form-control" id="title"
+                                           placeholder="机构名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-xs-2 control-label">机构简介</label>
+                                <div class="col-xs-10">
+                                <textarea id="inputPassword3" v-model="currentNews.content" class="form-control"
+                                          rows="5"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" @click="toEdit()" class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/back/js/vue.js"></script>
+<script src="/back/js/vue-resource.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            newses: [],
+            currentNews: {}
+        },
+        mounted: function () {
+            this.$http.get('/org/queryAll.action').then(function (res) {
+                this.newses = eval("("+res.body+")")
+            })
+        },
+        methods: {
+            del: function (item) {
+                var confirm2 = confirm("确定要删除<<" + item.title + ">> 这条机构信息吗?");
+                if (confirm2) {
+                    this.$http.post('/org/del.action', {"id": item.id}, {emulateJSON: true}).then(function (res) {
+                        alert("删除成功")
+                        window.location.href = "/back/index_org.html"
+                    })
+                }
+            },
+            edit: function (item) {
+                this.currentNews = item
+                $('#editModal').modal('show');
+
+            },
+            toEdit: function () {
+                this.$http.post('/org/edit.action', this.currentNews,{emulateJSON: true}).then(function (res) {
+                    $('#editModal').modal('hide')
+                    this.$http.get('/org/queryAll.action').then(function (res) {
+                        this.newses = eval("("+res.body+")")
+                    })
+                })
+            },
+            addFirstPage: function () {
+                this.currentNews = {}
+                $('#editModal').modal('show');
+            }
+        }
+    })
+</script>
+</body>
+</html>

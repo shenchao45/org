@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/back/css/bootstrap.css">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="/back/css/bootstrap-theme.css">
+    <script src="/back/js/jquery.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/back/js/bootstrap.min.js"></script>
+    <style>
+        .top{
+            height: 80px;
+            background-image: url("/img/bg.jpg");
+            margin-top:2px;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="row top">
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">首页</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">机构简介</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">成员组成</a></li>
+        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">新闻公告</a></li>
+        <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">成果展示</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            <div id="myCarousel" class="carousel slide">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                    <li data-target="#myCarousel" data-slide-to="4"></li>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="images/1495531141600.jpg" alt="First slide">
+                    </div>
+                    <div class="item">
+                        <img src="images/1495531144178.jpg" alt="Second slide">
+                    </div>
+                    <div class="item">
+                        <img src="images/1495531148161.jpg" alt="Third slide">
+                    </div>
+                    <div class="item">
+                        <img src="images/149553125736.jpg" alt="Third slide">
+                    </div>
+                    <div class="item">
+                        <img src="images/1495531254525.jpg" alt="Third slide">
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel"
+                   data-slide="prev">&lsaquo;
+                </a>
+                <a class="carousel-control right" href="#myCarousel"
+                   data-slide="next">&rsaquo;
+                </a>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+            <div class="col-sm-6 col-md-4"  v-for="(item,index) in orgs"  >
+                <div class="thumbnail">
+                    <img :src="'img/tm-img-0'+(index+1)+'-tn.jpg'"  >
+                    <div class="caption">
+                        <h3>{{item.title}}</h3>
+                        <p>{{item.content}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="messages">
+            <div class="col-sm-6 col-md-4"  v-for="(item,index) in groups"  >
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>{{item.title}}</h3>
+                        <p><span style="color: red">小组成员</span>:{{item.content}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="settings">
+            <div class="col-sm-6 col-md-4"  v-for="(item,index) in newses"  >
+                <div class="thumbnail">
+                    <div class="caption">
+                        <img :src="'img/tm-img-0'+(index+3)+'-tn.jpg'"  >
+                        <h3>{{item.title}}</h3>
+                        <p>{{item.content}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="achievement">
+            <div class="col-sm-6 col-md-4"  v-for="(item,index) in achievements"  >
+                <div class="thumbnail">
+                    <div class="caption">
+                        <img :src="'img/tm-img-0'+(index+1)+'-tn.jpg'"  >
+                        <h3>{{item.title}}</h3>
+                        <p>{{item.content}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/back/js/vue.js"></script>
+<script src="/back/js/vue-resource.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            newses: [],
+            groups:[],
+            orgs:[],
+            achievements:[]
+        },
+        mounted: function () {
+            this.$http.get('/group/queryAll.action').then(function (res) {
+                this.groups = eval("("+res.body+")")
+            })
+            this.$http.get('/news/queryAll.action').then(function (res) {
+                this.newses = eval("("+res.body+")")
+            })
+            this.$http.get('/achievement/queryAll.action').then(function (res) {
+                this.achievements = eval("("+res.body+")")
+            })
+            this.$http.get('/org/queryAll.action').then(function (res) {
+                this.orgs = eval("("+res.body+")")
+            })
+        }
+    })
+</script>
+</body>
+</html>

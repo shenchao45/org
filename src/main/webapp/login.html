@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <link href="css/style4.css" rel='stylesheet' type='text/css'/>
+    <script src="js/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<script>$(document).ready(function (c) {
+    $('.close').on('click', function (c) {
+        $('.login-form').fadeOut('slow', function (c) {
+            $('.login-form').remove();
+        });
+    });
+});
+</script>
+<!--SIGN UP-->
+<h1>苏科大研究机构信息系统</h1>
+<div class="login-form" id="app">
+    <div class="close"></div>
+    <div class="head-info">
+        <label class="lbl-1"> </label>
+        <label class="lbl-2"> </label>
+        <label class="lbl-3"> </label>
+    </div>
+    <div class="clear"></div>
+    <div class="avtar">
+        <img src="images/avtar.png"/>
+    </div>
+    <form @submit.prevent="submit">
+        <input type="text"  v-model="name" class="text" value="Username" onfocus="this.value = '';"
+               onblur="if (this.value == '') {this.value = 'Username';}">
+        <div class="key">
+            <input  v-model="password" type="password" value="Password" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = 'Password';}">
+        </div>
+    </form>
+    <div class="signin">
+        <input  @click="login()" type="submit" value="Login">
+    </div>
+</div>
+<div class="copy-rights">
+    <p>Copyright &copy; 2017.Company name All rights reserved.<a target="_blank" href="http://www.usts.edu.cn">苏科大研究机构信息系统</a>
+    </p>
+</div>
+<script src="/back/js/vue.js"></script>
+<script src="/back/js/vue-resource.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: "",
+            password: ""
+        },
+        methods: {
+            login: function () {
+                this.$http.post('/user/login.action', {"name": this.name,"password":this.password}, {emulateJSON: true}).then(function (res) {
+                    if(res.body=='error'){
+                        alert("用户名或者密码出错!")
+                    }else{
+                        if (res.body=='user') {
+                            window.location.href = "/index.jsp";
+                        }else{
+                            window.location.href = "/back/index_user.html";
+                        }
+                    }
+
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

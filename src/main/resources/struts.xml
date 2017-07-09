@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <package name="user" namespace="/user" extends="struts-default">
+        <action name="add" class="com.wzh.action.UserAction" method="addUser"/>
+        <action name="findAll" class="com.wzh.action.UserAction" method="queryAll"/>
+        <action name="del" class="com.wzh.action.UserAction" method="del"/>
+        <action name="login" class="com.wzh.action.UserAction" method="login"/>
+    </package>
+    <package name="news" namespace="/news" extends="struts-default">
+        <action name="edit" class="com.wzh.action.NewsAction" method="addNews">
+        </action>
+        <action name="queryAll" class="com.wzh.action.NewsAction" method="queryAll"/>
+        <action name="del" class="com.wzh.action.NewsAction" method="del"/>
+    </package>
+    <package name="org" namespace="/org" extends="struts-default">
+        <action name="edit" class="com.wzh.action.OrgAction" method="addOrg">
+        </action>
+        <action name="queryAll" class="com.wzh.action.OrgAction" method="queryAll"/>
+        <action name="del" class="com.wzh.action.OrgAction" method="del"/>
+    </package>
+    <package name="group" namespace="/group" extends="struts-default">
+        <action name="edit" class="com.wzh.action.GroupAction" method="addGroup">
+        </action>
+        <action name="queryAll" class="com.wzh.action.GroupAction" method="queryAll"/>
+        <action name="del" class="com.wzh.action.GroupAction" method="del"/>
+    </package>
+    <package name="achievement" namespace="/achievement" extends="struts-default">
+        <action name="edit" class="com.wzh.action.AchievementsAction" method="addAchievements">
+        </action>
+        <action name="queryAll" class="com.wzh.action.AchievementsAction" method="queryAll"/>
+        <action name="del" class="com.wzh.action.AchievementsAction" method="del"/>
+    </package>
+</struts>
